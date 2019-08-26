@@ -1,0 +1,17 @@
+.menu {
+    flex-grow: 1;
+    max-width: 255px;
+    height: 100%;
+    background-color: white;
+    box-shadow: 2px 0 2px #AEAEAE;
+}
+
+.menu-item {
+    padding: 20px 10px;
+    border-bottom: 1px solid grey;
+    font-size: 1.2em;
+}
+
+.menu-item-active {
+    background-color: darkgrey;
+}

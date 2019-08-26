@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
+
+import {Header} from './Header';
+import {Menu} from './Menu';
+import {Details} from './Details';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+export default class App extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pokemons: [],
+            selected: null
+        };
+    }
+
+    componentDidMount() {
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
+            .then(res => res.json())
+            .then(pokemons => this.setState({
+                pokemons: pokemons.results,
+                selected: pokemons.results[0]
+            }));
+    }
+
+    setSelection = selected => this.setState({selected});
+
+    render() {
+        const {pokemons, selected} = this.state;
+        return (
+            <>
+                <Header name={selected ? selected.name : ''}/>
+                <article>
+                    <Menu pokemons={pokemons} selected={selected} onSelectionChange={this.setSelection}/>
+                    {selected && <Details pokemon={selected}/>}
+                </article>
+            </>
+        );
+    }
+}
